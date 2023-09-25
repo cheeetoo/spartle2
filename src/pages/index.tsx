@@ -3,36 +3,9 @@ export default function Home() {
     <main>
       <div className="alert-container" data-alert-container></div>
       <div data-guess-grid className="guess-grid">
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
-        <div className="tile"></div>
+        {Array.from({ length: 30 }).map((_, index) => (
+          <div className="tile"></div>
+        ))}
       </div>
       <div data-keyboard className="keyboard">
         {"QWERTYUIOP".split("").map((letter) => (
