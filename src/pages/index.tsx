@@ -1,5 +1,10 @@
+import Row from "@/components/row";
+
 export default function Home() {
-  return (
-   <p>Sus</p> 
-  )
+
+	return (
+		<div className="">
+			<Row></Row>
+		</div>
+	)
 }
