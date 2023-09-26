@@ -4,18 +4,18 @@ export default function Home() {
       <div className="alert-container" data-alert-container></div>
       <div data-guess-grid className="guess-grid">
         {Array.from({ length: 30 }).map((_, index) => (
-          <div className="tile"></div>
+          <div className="tile" key={index}></div>
         ))}
       </div>
       <div data-keyboard className="keyboard">
         {"QWERTYUIOP".split("").map((letter) => (
-          <button className="key" data-key={letter}>
+          <button className="key" data-key={letter} key={letter}>
             {letter}
           </button>
         ))}
         <div className="space"></div>
         {"ASDFGHJKL".split("").map((letter) => (
-          <button className="key" data-key={letter}>
+          <button className="key" data-key={letter} key={letter}>
             {letter}
           </button>
         ))}
@@ -24,7 +24,7 @@ export default function Home() {
           Enter
         </button>
         {"ZXCVBNM".split("").map((letter) => (
-          <button className="key" data-key={letter}>
+          <button className="key" data-key={letter} key={letter}>
             {letter}
           </button>
         ))}
