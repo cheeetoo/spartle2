@@ -1,5 +1,9 @@
+import Script from "next/script"
+
 export default function Home() {
   return (
+    <>
+    <Script src="/script.js"></Script>
     <main>
       <div className="alert-container" data-alert-container></div>
       <div data-guess-grid className="guess-grid">
@@ -43,5 +47,6 @@ export default function Home() {
         </button>
       </div>
     </main>
+    </>
   );
 }
