@@ -15365,7 +15365,7 @@ const targetWords = [
   function deleteKey() {
     const activeTiles = getActiveTiles();
     const lastTile = activeTiles[activeTiles.length - 1];
-    if (lastTile === null) return;
+    if (!lastTile) return;
     lastTile.textContent = "";
     delete lastTile.dataset.state;
     delete lastTile.dataset.letter;
