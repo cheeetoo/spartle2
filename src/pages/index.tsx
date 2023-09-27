@@ -1,11 +1,19 @@
 import Script from "next/script";
 import Keyboard from "@/components/Keyboard";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
   const alertContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    startInteraction();
+
+    return () => {
+      stopInteraction();
+    }
+  }, [])
 
   return (
     <>
