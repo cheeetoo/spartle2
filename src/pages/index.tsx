@@ -1,7 +1,12 @@
 import Script from "next/script";
 import Keyboard from "@/components/Keyboard";
+import { useRef } from "react";
 
 export default function Home() {
+  const keyboardRef = useRef<HTMLDivElement>(null);
+  const guessGridRef = useRef<HTMLDivElement>(null);
+  const alertContainerRef = useRef<HTMLDivElement>(null);
+
   return (
     <>
       <Script src="/script.js"></Script>
@@ -9,13 +14,13 @@ export default function Home() {
         Spartle
       </header>
       <main>
-        <div className="alert-container" data-alert-container></div>
-        <div data-guess-grid className="guess-grid">
+        <div className="alert-container" ref={alertContainerRef}></div>
+        <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (
             <div className="tile" key={index}></div>
           ))}
         </div>
-        <Keyboard />
+        <Keyboard ref={keyboardRef} />
       </main>
     </>
   );

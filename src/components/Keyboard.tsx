@@ -1,6 +1,10 @@
-export default function Keyboard() {
+interface KeyboardProps {
+  ref: React.RefObject<HTMLDivElement>;
+}
+
+export default function Keyboard({ ref }: KeyboardProps) {
   return (
-    <div data-keyboard className="keyboard">
+    <div className="keyboard" ref={ref}>
       {"QWERTYUIOP".split("").map((letter) => (
         <button className="key" data-key={letter} key={letter}>
           {letter}
