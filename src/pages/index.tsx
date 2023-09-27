@@ -8,10 +8,10 @@ export default function Home() {
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    startInteraction();
+    startInteraction(guessGridRef);
 
     return () => {
-      stopInteraction();
+      stopInteraction(guessGridRef);
     }
   }, [])
 
@@ -34,24 +34,24 @@ export default function Home() {
   );
 }
 
-function startInteraction() {
-  document.addEventListener("click", handleMouseClick);
-  document.addEventListener("keydown", handleKeyPress);
+function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
+  document.addEventListener("click", (e) => handleMouseClick(e, guessGrid));
+  document.addEventListener("keydown", (e) => handleKeyPress(e, guessGrid));
 }
 
-function stopInteraction() {
-  document.removeEventListener("click", handleMouseClick);
-  document.removeEventListener("keydown", handleKeyPress);
+function stopInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
+  document.removeEventListener("click", (e) => handleMouseClick(e, guessGrid));
+  document.removeEventListener("keydown", (e) => handleKeyPress(e, guessGrid));
 }
 
-function handleMouseClick(e: any) {
+function handleMouseClick(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
   if (e.target.matches("[data-key]")) {
-    pressKey(e.target.dataset.key);
+    pressKey(e.target.dataset.key, guessGrid);
     return;
   }
 
   if (e.target.matches("[data-enter]")) {
-    submitGuess();
+    submitGuess(guessGrid);
     return;
   }
 
@@ -61,9 +61,9 @@ function handleMouseClick(e: any) {
   }
 }
 
-function handleKeyPress(e: any) {
+function handleKeyPress(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
   if (e.key === "Enter") {
-    submitGuess();
+    submitGuess(guessGrid);
     return;
   }
 
@@ -73,17 +73,18 @@ function handleKeyPress(e: any) {
   }
 
   if (e.key.match(/^[a-z]$/)) {
-    pressKey(e.key);
+    pressKey(e.key, guessGrid);
     return;
   }
 }
 
-function pressKey(key: any) {
+function pressKey(key: any, guessGrid: React.RefObject<HTMLDivElement>) {
   const activeTiles = getActiveTiles();
   if (activeTiles.length >= 5) {
     return;
   }
-  const nextTile = guessGrid.querySelector(":not([data-letter])");
+  const nextTile = guessGrid.current?.querySelector(":not([data-letter])") as HTMLDivElement;
+  if (!nextTile) return;
   nextTile.dataset.letter = key.toLowerCase();
   nextTile.textContent = key;
   nextTile.dataset.state = "active";
@@ -98,7 +99,7 @@ function deleteKey() {
   delete lastTile.dataset.letter;
 }
 
-function submitGuess() {
+function submitGuess(guessGrid: React.RefObject<HTMLDivElement>) {
   const activeTiles = [...getActiveTiles()];
   if (activeTiles.length !== 5) {
     showAlert("Not enough letters!");
@@ -115,11 +116,11 @@ function submitGuess() {
     return;
   }
 
-  stopInteraction();
-  activeTiles.forEach((...params) => flipTile(...params, guess));
+  stopInteraction(guessGrid);
+  activeTiles.forEach((...params) => flipTile(...params, guess, guessGrid));
 }
 
-function flipTile(tile: any, index: any, array: any, guess: any) {
+function flipTile(tile: any, index: any, array: any, guess: any, guessGrid: React.RefObject<HTMLDivElement>) {
   const letter = tile.dataset.letter;
   const key = keyboard.querySelector(`[data-key="${letter}"i]`);
   setTimeout(() => {
@@ -145,8 +146,8 @@ function flipTile(tile: any, index: any, array: any, guess: any) {
         tile.addEventListener(
           "transitionend",
           () => {
-            startInteraction();
-            checkWinLose(guess, array);
+            startInteraction(guessGrid);
+            checkWinLose(guess, array, guessGrid);
           },
           { once: true }
         );
@@ -189,18 +190,18 @@ function shakeTiles(tiles: any) {
   });
 }
 
-function checkWinLose(guess: any, tiles: any) {
+function checkWinLose(guess: any, tiles: any, guessGrid: React.RefObject<HTMLDivElement>) {
   if (guess === targetWord) {
     showAlert("You Win!!! 🎉🎉", 6000);
     danceTiles(tiles);
-    stopInteraction();
+    stopInteraction(guessGrid);
     return;
   }
 
   const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])");
   if (remainingTiles.length === 0) {
     showAlert("Correct word: " + targetWord.toUpperCase(), null);
-    stopInteraction();
+    stopInteraction(guessGrid);
   }
 }
 function danceTiles(tiles: any) {
