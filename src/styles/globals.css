@@ -121,7 +121,7 @@ body {
 }
 
 .tile.shake {
-  animation: shake 250ms ease-in-out;
+  animation: shake 600ms ease-in-out;
 }
 
 .tile.dance {
@@ -149,30 +149,28 @@ body {
 }
 
 @keyframes shake {
-  10% {
-    transform: translateX(-5%);
-  }
-
-  30% {
-    transform: translateX(5%);
-  }
-
-  50% {
-    transform: translateX(7.5%);
-  }
-
-  70% {
-    transform: translateX(7.5%);
-  }
-
+  10%,
   90% {
+    transform: translateX(-2.5%);
+  }
+
+  20%,
+  80% {
     transform: translateX(5%);
   }
 
-  100% {
-    transform: translateX(0);
+  30%,
+  50%,
+  70% {
+    transform: translateX(-7.5%);
+  }
+
+  40%,
+  60% {
+    transform: translateX(7.5%);
   }
 }
+
 
 @keyframes dance {
   20% {
