@@ -154,7 +154,6 @@ function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
     return;
   }
 
-  stopInteraction();
   activeTiles.forEach((...params) =>
     flipTile(...params, guess, keyboard, guessGrid, alertContainer)
   );
