@@ -117,6 +117,14 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
   nextTile.dataset.letter = key.toLowerCase();
   nextTile.textContent = key;
   nextTile.dataset.state = "active";
+  nextTile.classList.add("zoom");
+  nextTile.addEventListener(
+    "animationend",
+    () => {
+      nextTile.classList.remove("zoom");
+    },
+    { once: true }
+  );
 }
 
 function deleteKey(guessGrid: RefObject<HTMLDivElement>) {
