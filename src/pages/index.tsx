@@ -7,7 +7,7 @@ export default function Home() {
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const stopInteraction = startInteraction(guessGridRef);
+    stopInteraction = startInteraction(guessGridRef);
 
     return () => {
       stopInteraction();
@@ -31,6 +31,8 @@ export default function Home() {
     </>
   );
 }
+
+let stopInteraction: () => void;
 
 function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
   const handleClick = (e: Event) => handleMouseClick(e, guessGrid);
@@ -117,7 +119,7 @@ function submitGuess(guessGrid: React.RefObject<HTMLDivElement>) {
     return;
   }
 
-  stopInteraction(guessGrid);
+  stopInteraction();
   activeTiles.forEach((...params) => flipTile(...params, guess, guessGrid));
 }
 
@@ -195,14 +197,14 @@ function checkWinLose(guess: any, tiles: any, guessGrid: React.RefObject<HTMLDiv
   if (guess === targetWord) {
     showAlert("You Win!!! 🎉🎉", 6000);
     danceTiles(tiles);
-    stopInteraction(guessGrid);
+    stopInteraction();
     return;
   }
 
   const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])");
   if (remainingTiles.length === 0) {
     showAlert("Correct word: " + targetWord.toUpperCase(), null);
-    stopInteraction(guessGrid);
+    stopInteraction();
   }
 }
 function danceTiles(tiles: any) {
