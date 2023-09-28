@@ -12,11 +12,13 @@ export default function Home() {
       guessGrid: guessGridRef,
       alertContainer: alertContainerRef,
     });
-    const getDict = async () => {
-      const text = await (await fetch("/words")).text();
-      dictionary = text.split("\n");
+    const getData = async () => {
+      const dictText = await (await fetch("/words")).text();
+      dictionary = dictText.split("\n");
+      const wordText = await (await fetch("/api/word")).json();
+      targetWord = wordText.word;
     };
-    getDict();
+    getData();
 
     return () => {
       stopInteraction();
@@ -43,6 +45,7 @@ export default function Home() {
 
 let stopInteraction: () => void;
 let dictionary: string[];
+let targetWord: string;
 
 interface Refs {
   keyboard: RefObject<HTMLDivElement>;
