@@ -1,6 +1,6 @@
 import { forwardRef, ForwardRefRenderFunction, ForwardedRef } from "react";
 
-const KeyBoard = forwardRef((_, ref: any) => {
+const KeyBoard = forwardRef(function KeyBoard(_, ref: any) {
   return (
     <div className="keyboard" ref={ref}>
       {"QWERTYUIOP".split("").map((letter) => (
