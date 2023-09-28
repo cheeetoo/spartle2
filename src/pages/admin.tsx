@@ -18,7 +18,7 @@ export default function Admin() {
       alert("Incorrect password");
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
   const updateWord = async (word: string) => {
     if (word.length !== 5) {
