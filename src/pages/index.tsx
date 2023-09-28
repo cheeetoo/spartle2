@@ -1,3 +1,4 @@
+import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
 import { useEffect, useRef, RefObject } from "react";
 
@@ -31,6 +32,7 @@ export default function Home() {
         Spartle
       </header>
       <main>
+        <InformationBox />
         <div className="alert-container" ref={alertContainerRef}></div>
         <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (
