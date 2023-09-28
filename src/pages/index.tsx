@@ -1,5 +1,5 @@
 import Keyboard from "@/components/Keyboard";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, RefObject } from "react";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
@@ -45,9 +45,9 @@ let stopInteraction: () => void;
 let dictionary: string[];
 
 interface Refs {
-  keyboard: React.RefObject<HTMLDivElement>;
-  guessGrid: React.RefObject<HTMLDivElement>;
-  alertContainer: React.RefObject<HTMLDivElement>;
+  keyboard: RefObject<HTMLDivElement>;
+  guessGrid: RefObject<HTMLDivElement>;
+  alertContainer: RefObject<HTMLDivElement>;
 }
 
 function startInteraction({ keyboard, guessGrid, alertContainer }: Refs) {
@@ -102,7 +102,7 @@ function handleKeyPress(e: any, { keyboard, guessGrid, alertContainer }: Refs) {
   }
 }
 
-function pressKey(key: any, guessGrid: React.RefObject<HTMLDivElement>) {
+function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
   const activeTiles = getActiveTiles(guessGrid) ?? [];
   if (activeTiles.length >= 5) {
     return;
@@ -116,7 +116,7 @@ function pressKey(key: any, guessGrid: React.RefObject<HTMLDivElement>) {
   nextTile.dataset.state = "active";
 }
 
-function deleteKey(guessGrid: React.RefObject<HTMLDivElement>) {
+function deleteKey(guessGrid: RefObject<HTMLDivElement>) {
   const activeTiles = getActiveTiles(guessGrid);
   const lastTile = activeTiles[activeTiles.length - 1];
   if (!lastTile) return;
@@ -153,9 +153,9 @@ function flipTile(
   index: any,
   array: any,
   guess: any,
-  keyboard: React.RefObject<HTMLDivElement>,
-  guessGrid: React.RefObject<HTMLDivElement>,
-  alertContainer: React.RefObject<HTMLDivElement>
+  keyboard: RefObject<HTMLDivElement>,
+  guessGrid: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const letter = tile.dataset.letter;
   const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
@@ -193,14 +193,14 @@ function flipTile(
   );
 }
 
-function getActiveTiles(guessGrid: React.RefObject<HTMLDivElement>) {
+function getActiveTiles(guessGrid: RefObject<HTMLDivElement>) {
   return guessGrid.current?.querySelectorAll('[data-state="active"]');
 }
 
 function showAlert(
   message: any,
   duration: number | null = 1000,
-  alertContainer: React.RefObject<HTMLDivElement>
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const alert = document.createElement("div");
   alert.textContent = message;
@@ -233,8 +233,8 @@ function shakeTiles(tiles: any) {
 function checkWinLose(
   guess: any,
   tiles: any,
-  guessGrid: React.RefObject<HTMLDivElement>,
-  alertContainer: React.RefObject<HTMLDivElement>
+  guessGrid: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   if (guess === targetWord) {
     showAlert("You Win!!! 🎉🎉", 6000, alertContainer);
