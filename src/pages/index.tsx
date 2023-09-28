@@ -7,12 +7,12 @@ export default function Home() {
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    startInteraction(guessGridRef);
+    const stopInteraction = startInteraction(guessGridRef);
 
     return () => {
-      stopInteraction(guessGridRef);
-    }
-  }, [])
+      stopInteraction();
+    };
+  }, []);
 
   return (
     <>
@@ -33,13 +33,16 @@ export default function Home() {
 }
 
 function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
-  document.addEventListener("click", (e) => handleMouseClick(e, guessGrid));
-  document.addEventListener("keydown", (e) => handleKeyPress(e, guessGrid));
-}
+  const handleClick = (e: Event) => handleMouseClick(e, guessGrid);
+  const handleKey = (e: KeyboardEvent) => handleKeyPress(e, guessGrid);
 
-function stopInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
-  document.removeEventListener("click", (e) => handleMouseClick(e, guessGrid));
-  document.removeEventListener("keydown", (e) => handleKeyPress(e, guessGrid));
+  document.addEventListener("click", handleClick);
+  document.addEventListener("keydown", handleKey);
+
+  return () => {
+    document.removeEventListener("click", handleClick);
+    document.removeEventListener("keydown", handleKey);
+  };
 }
 
 function handleMouseClick(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
