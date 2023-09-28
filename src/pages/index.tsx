@@ -121,7 +121,8 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
 
 function deleteKey(guessGrid: RefObject<HTMLDivElement>) {
   const activeTiles = getActiveTiles(guessGrid);
-  const lastTile = activeTiles[activeTiles.length - 1];
+  if (!activeTiles) return;
+  const lastTile = activeTiles[activeTiles.length - 1] as HTMLElement;
   if (!lastTile) return;
   lastTile.textContent = "";
   delete lastTile.dataset.state;
@@ -137,7 +138,7 @@ function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
   }
 
   const guess = activeTiles.reduce((word, tile) => {
-    return word + tile.dataset.letter;
+    return word + (tile as HTMLDivElement).dataset.letter;
   }, "");
   if (!dictionary.includes(guess)) {
     showAlert("Not in word list", 1000, alertContainer);
@@ -162,6 +163,7 @@ function flipTile(
 ) {
   const letter = tile.dataset.letter;
   const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
+  if (!key) return;
   setTimeout(() => {
     tile.classList.add("flip");
   }, (index * 500) / 2); // NOTE: FLIP_ANIMATION_DURATION is 500
@@ -185,7 +187,7 @@ function flipTile(
         tile.addEventListener(
           "transitionend",
           () => {
-            startInteraction(guessGrid); // wtf is going on here
+            // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
             checkWinLose(guess, array, guessGrid, alertContainer);
           },
           { once: true }
@@ -249,6 +251,7 @@ function checkWinLose(
   const remainingTiles = guessGrid.current?.querySelectorAll(
     ":not([data-letter])"
   );
+  if (!remainingTiles) return;
   if (remainingTiles.length === 0) {
     showAlert(
       "Correct word: " + targetWord.toUpperCase(),
