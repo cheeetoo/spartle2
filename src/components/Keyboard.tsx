@@ -1,8 +1,6 @@
-interface KeyboardProps {
-  ref: React.RefObject<HTMLDivElement>;
-}
+import { forwardRef, ForwardRefRenderFunction, ForwardedRef } from "react";
 
-export default function Keyboard({ ref }: KeyboardProps) {
+const KeyBoard = forwardRef((_, ref: any) => {
   return (
     <div className="keyboard" ref={ref}>
       {"QWERTYUIOP".split("").map((letter) => (
@@ -40,4 +38,6 @@ export default function Keyboard({ ref }: KeyboardProps) {
       </button>
     </div>
   );
-};
+});
+
+export default KeyBoard;
