@@ -1,5 +1,5 @@
 import Keyboard from "@/components/Keyboard";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
@@ -7,11 +7,15 @@ export default function Home() {
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    stopInteraction = startInteraction(guessGridRef);
+    stopInteraction = startInteraction({
+      keyboard: keyboardRef,
+      guessGrid: guessGridRef,
+      alertContainer: alertContainerRef,
+    });
     const getDict = async () => {
-      const text = await (await fetch("/words")).text()
-      dictionary = text.split("\n")
-    }
+      const text = await (await fetch("/words")).text();
+      dictionary = text.split("\n");
+    };
     getDict();
 
     return () => {
@@ -40,9 +44,17 @@ export default function Home() {
 let stopInteraction: () => void;
 let dictionary: string[];
 
-function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
-  const handleClick = (e: Event) => handleMouseClick(e, guessGrid);
-  const handleKey = (e: KeyboardEvent) => handleKeyPress(e, guessGrid);
+interface Refs {
+  keyboard: React.RefObject<HTMLDivElement>;
+  guessGrid: React.RefObject<HTMLDivElement>;
+  alertContainer: React.RefObject<HTMLDivElement>;
+}
+
+function startInteraction({ keyboard, guessGrid, alertContainer }: Refs) {
+  const handleClick = (e: Event) =>
+    handleMouseClick(e, { keyboard, guessGrid, alertContainer });
+  const handleKey = (e: KeyboardEvent) =>
+    handleKeyPress(e, { keyboard, guessGrid, alertContainer });
 
   document.addEventListener("click", handleClick);
   document.addEventListener("keydown", handleKey);
@@ -53,31 +65,34 @@ function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
   };
 }
 
-function handleMouseClick(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
+function handleMouseClick(
+  e: any,
+  { keyboard, guessGrid, alertContainer }: Refs
+) {
   if (e.target.matches("[data-key]")) {
     pressKey(e.target.dataset.key, guessGrid);
     return;
   }
 
   if (e.target.matches("[data-enter]")) {
-    submitGuess(guessGrid);
+    submitGuess({ keyboard, guessGrid, alertContainer });
     return;
   }
 
   if (e.target.matches("[data-delete]")) {
-    deleteKey();
+    deleteKey(guessGrid);
     return;
   }
 }
 
-function handleKeyPress(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
+function handleKeyPress(e: any, { keyboard, guessGrid, alertContainer }: Refs) {
   if (e.key === "Enter") {
-    submitGuess(guessGrid);
+    submitGuess({ keyboard, guessGrid, alertContainer });
     return;
   }
 
   if (e.key === "Backspace" || e.key === "Delete") {
-    deleteKey();
+    deleteKey(guessGrid);
     return;
   }
 
@@ -88,19 +103,21 @@ function handleKeyPress(e: any, guessGrid: React.RefObject<HTMLDivElement>) {
 }
 
 function pressKey(key: any, guessGrid: React.RefObject<HTMLDivElement>) {
-  const activeTiles = getActiveTiles();
+  const activeTiles = getActiveTiles(guessGrid) ?? [];
   if (activeTiles.length >= 5) {
     return;
   }
-  const nextTile = guessGrid.current?.querySelector(":not([data-letter])") as HTMLDivElement;
+  const nextTile = guessGrid.current?.querySelector(
+    ":not([data-letter])"
+  ) as HTMLDivElement;
   if (!nextTile) return;
   nextTile.dataset.letter = key.toLowerCase();
   nextTile.textContent = key;
   nextTile.dataset.state = "active";
 }
 
-function deleteKey() {
-  const activeTiles = getActiveTiles();
+function deleteKey(guessGrid: React.RefObject<HTMLDivElement>) {
+  const activeTiles = getActiveTiles(guessGrid);
   const lastTile = activeTiles[activeTiles.length - 1];
   if (!lastTile) return;
   lastTile.textContent = "";
@@ -108,10 +125,10 @@ function deleteKey() {
   delete lastTile.dataset.letter;
 }
 
-function submitGuess(guessGrid: React.RefObject<HTMLDivElement>) {
-  const activeTiles = [...getActiveTiles()];
+function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
+  const activeTiles = Array.from(getActiveTiles(guessGrid) ?? []);
   if (activeTiles.length !== 5) {
-    showAlert("Not enough letters!");
+    showAlert("Not enough letters!", 1000, alertContainer);
     shakeTiles(activeTiles);
     return;
   }
@@ -120,18 +137,28 @@ function submitGuess(guessGrid: React.RefObject<HTMLDivElement>) {
     return word + tile.dataset.letter;
   }, "");
   if (!dictionary.includes(guess)) {
-    showAlert("Not in word list");
+    showAlert("Not in word list", 1000, alertContainer);
     shakeTiles(activeTiles);
     return;
   }
 
   stopInteraction();
-  activeTiles.forEach((...params) => flipTile(...params, guess, guessGrid));
+  activeTiles.forEach((...params) =>
+    flipTile(...params, guess, keyboard, guessGrid, alertContainer)
+  );
 }
 
-function flipTile(tile: any, index: any, array: any, guess: any, guessGrid: React.RefObject<HTMLDivElement>) {
+function flipTile(
+  tile: any,
+  index: any,
+  array: any,
+  guess: any,
+  keyboard: React.RefObject<HTMLDivElement>,
+  guessGrid: React.RefObject<HTMLDivElement>,
+  alertContainer: React.RefObject<HTMLDivElement>
+) {
   const letter = tile.dataset.letter;
-  const key = keyboard.querySelector(`[data-key="${letter}"i]`);
+  const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
   setTimeout(() => {
     tile.classList.add("flip");
   }, (index * 500) / 2); // NOTE: FLIP_ANIMATION_DURATION is 500
@@ -155,8 +182,8 @@ function flipTile(tile: any, index: any, array: any, guess: any, guessGrid: Reac
         tile.addEventListener(
           "transitionend",
           () => {
-            startInteraction(guessGrid);
-            checkWinLose(guess, array, guessGrid);
+            startInteraction(guessGrid); // wtf is going on here
+            checkWinLose(guess, array, guessGrid, alertContainer);
           },
           { once: true }
         );
@@ -166,15 +193,19 @@ function flipTile(tile: any, index: any, array: any, guess: any, guessGrid: Reac
   );
 }
 
-function getActiveTiles() {
-  return guessGrid.querySelectorAll('[data-state="active"]');
+function getActiveTiles(guessGrid: React.RefObject<HTMLDivElement>) {
+  return guessGrid.current?.querySelectorAll('[data-state="active"]');
 }
 
-function showAlert(message: any, duration = 1000) {
+function showAlert(
+  message: any,
+  duration: number | null = 1000,
+  alertContainer: React.RefObject<HTMLDivElement>
+) {
   const alert = document.createElement("div");
   alert.textContent = message;
   alert.classList.add("alert");
-  alertContainer.prepend(alert);
+  alertContainer.current?.prepend(alert);
   if (duration == null) {
     return;
   }
@@ -199,17 +230,28 @@ function shakeTiles(tiles: any) {
   });
 }
 
-function checkWinLose(guess: any, tiles: any, guessGrid: React.RefObject<HTMLDivElement>) {
+function checkWinLose(
+  guess: any,
+  tiles: any,
+  guessGrid: React.RefObject<HTMLDivElement>,
+  alertContainer: React.RefObject<HTMLDivElement>
+) {
   if (guess === targetWord) {
-    showAlert("You Win!!! 🎉🎉", 6000);
+    showAlert("You Win!!! 🎉🎉", 6000, alertContainer);
     danceTiles(tiles);
     stopInteraction();
     return;
   }
 
-  const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])");
+  const remainingTiles = guessGrid.current?.querySelectorAll(
+    ":not([data-letter])"
+  );
   if (remainingTiles.length === 0) {
-    showAlert("Correct word: " + targetWord.toUpperCase(), null);
+    showAlert(
+      "Correct word: " + targetWord.toUpperCase(),
+      null,
+      alertContainer
+    );
     stopInteraction();
   }
 }
