@@ -8,6 +8,11 @@ export default function Home() {
 
   useEffect(() => {
     stopInteraction = startInteraction(guessGridRef);
+    const getDict = async () => {
+      const text = await (await fetch("/words")).text()
+      dictionary = text.split("\n")
+    }
+    getDict();
 
     return () => {
       stopInteraction();
@@ -33,6 +38,7 @@ export default function Home() {
 }
 
 let stopInteraction: () => void;
+let dictionary: string[];
 
 function startInteraction(guessGrid: React.RefObject<HTMLDivElement>) {
   const handleClick = (e: Event) => handleMouseClick(e, guessGrid);
