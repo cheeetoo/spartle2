@@ -4,6 +4,9 @@ import Modal from "react-modal";
 export default function InformationBox() {
   const [modalIsOpen, setIsOpen] = useState(true);
   const customStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.75)",
+    },
     content: {
       maxWidth: "520px",
       width: "100%",
@@ -26,7 +29,6 @@ export default function InformationBox() {
     <Modal
       isOpen={modalIsOpen}
       style={customStyles}
-      overlayClassName="bg-transparent"
     >
       <div className="flex flex-col h-full font-sans">
         <div className="flex justify-end p-4">
