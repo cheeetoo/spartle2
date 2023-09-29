@@ -16,6 +16,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.75)",
+      backdropFilter: "blur(5px)",
     },
     content: {
       maxWidth: "520px",
