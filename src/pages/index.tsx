@@ -1,10 +1,13 @@
+import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
-import { useEffect, useRef, RefObject } from "react";
+import { useEffect, useRef, RefObject, useState } from "react";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
   const alertContainerRef = useRef<HTMLDivElement>(null);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     stopInteraction = startInteraction({
@@ -27,10 +30,26 @@ export default function Home() {
 
   return (
     <>
-      <header className="text-white flex justify-center text-4xl font-bold border-b-2 w-full overflow-hidden p-4 mb-4 border-[#39393c] font-sans">
-        Spartle
+      <header className="text-white flex justify-between items-center border-b-2 w-full overflow-hidden p-4 mb-4 border-[#39393c]">
+        <div></div>
+        <div className="text-4xl font-bold font-sans">Spartle</div>
+        <button onClick={() => setIsOpen(true)}>
+          <svg
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            height="28"
+            viewBox="4 4 24 24"
+            width="28"
+          >
+            <path
+              fill="#ffffff"
+              d="M14.8333 23H17.1666V20.6667H14.8333V23ZM15.9999 4.33334C9.55992 4.33334 4.33325 9.56001 4.33325 16C4.33325 22.44 9.55992 27.6667 15.9999 27.6667C22.4399 27.6667 27.6666 22.44 27.6666 16C27.6666 9.56001 22.4399 4.33334 15.9999 4.33334ZM15.9999 25.3333C10.8549 25.3333 6.66659 21.145 6.66659 16C6.66659 10.855 10.8549 6.66668 15.9999 6.66668C21.1449 6.66668 25.3333 10.855 25.3333 16C25.3333 21.145 21.1449 25.3333 15.9999 25.3333ZM15.9999 9.00001C13.4216 9.00001 11.3333 11.0883 11.3333 13.6667H13.6666C13.6666 12.3833 14.7166 11.3333 15.9999 11.3333C17.2833 11.3333 18.3333 12.3833 18.3333 13.6667C18.3333 16 14.8333 15.7083 14.8333 19.5H17.1666C17.1666 16.875 20.6666 16.5833 20.6666 13.6667C20.6666 11.0883 18.5783 9.00001 15.9999 9.00001Z"
+            ></path>
+          </svg>
+        </button>
       </header>
       <main>
+        <InformationBox modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
         <div className="alert-container" ref={alertContainerRef}></div>
         <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (
@@ -70,7 +89,7 @@ function startInteraction({ keyboard, guessGrid, alertContainer }: Refs) {
 
 function handleMouseClick(
   e: any,
-  { keyboard, guessGrid, alertContainer }: Refs,
+  { keyboard, guessGrid, alertContainer }: Refs
 ) {
   if (e.target.matches("[data-key]")) {
     pressKey(e.target.dataset.key, guessGrid);
@@ -111,7 +130,7 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
     return;
   }
   const nextTile = guessGrid.current?.querySelector(
-    ":not([data-letter])",
+    ":not([data-letter])"
   ) as HTMLDivElement;
   if (!nextTile) return;
   nextTile.dataset.letter = key.toLowerCase();
@@ -123,7 +142,7 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
     () => {
       nextTile.classList.remove("zoom");
     },
-    { once: true },
+    { once: true }
   );
 }
 
@@ -155,7 +174,7 @@ function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
   }
 
   activeTiles.forEach((...params) =>
-    flipTile(...params, guess, keyboard, guessGrid, alertContainer),
+    flipTile(...params, guess, keyboard, guessGrid, alertContainer)
   );
 }
 
@@ -166,17 +185,14 @@ function flipTile(
   guess: any,
   keyboard: RefObject<HTMLDivElement>,
   guessGrid: RefObject<HTMLDivElement>,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const letter = tile.dataset.letter;
   const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
   if (!key) return;
-  setTimeout(
-    () => {
-      tile.classList.add("flip");
-    },
-    (index * 500) / 2,
-  ); // NOTE: FLIP_ANIMATION_DURATION is 500
+  setTimeout(() => {
+    tile.classList.add("flip");
+  }, (index * 500) / 2); // NOTE: FLIP_ANIMATION_DURATION is 500
 
   tile.addEventListener(
     "transitionend",
@@ -200,11 +216,11 @@ function flipTile(
             // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
             checkWinLose(guess, array, guessGrid, alertContainer);
           },
-          { once: true },
+          { once: true }
         );
       }
     },
-    { once: true },
+    { once: true }
   );
 }
 
@@ -215,7 +231,7 @@ function getActiveTiles(guessGrid: RefObject<HTMLDivElement>) {
 function showAlert(
   message: any,
   duration: number | null = 1000,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const alert = document.createElement("div");
   alert.textContent = message;
@@ -240,7 +256,7 @@ function shakeTiles(tiles: any) {
       () => {
         tile.classList.remove("shake");
       },
-      { once: true },
+      { once: true }
     );
   });
 }
@@ -249,7 +265,7 @@ function checkWinLose(
   guess: any,
   tiles: any,
   guessGrid: RefObject<HTMLDivElement>,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   if (guess === targetWord) {
     showAlert("You Win!!! 🎉🎉", 6000, alertContainer);
@@ -259,32 +275,29 @@ function checkWinLose(
   }
 
   const remainingTiles = guessGrid.current?.querySelectorAll(
-    ":not([data-letter])",
+    ":not([data-letter])"
   );
   if (!remainingTiles) return;
   if (remainingTiles.length === 0) {
     showAlert(
       "Correct word: " + targetWord.toUpperCase(),
       null,
-      alertContainer,
+      alertContainer
     );
     stopInteraction();
   }
 }
 function danceTiles(tiles: any) {
   tiles.forEach((tile: any, index: any) => {
-    setTimeout(
-      () => {
-        tile.classList.add("dance");
-        tile.addEventListener(
-          "animationend",
-          () => {
-            tile.classList.remove("dance");
-          },
-          { once: true },
-        );
-      },
-      (index * 500) / 5,
-    ); // NOTE: DANCE_ANIMATION_DURATION is 500 here
+    setTimeout(() => {
+      tile.classList.add("dance");
+      tile.addEventListener(
+        "animationend",
+        () => {
+          tile.classList.remove("dance");
+        },
+        { once: true }
+      );
+    }, (index * 500) / 5); // NOTE: DANCE_ANIMATION_DURATION is 500 here
   });
 }

@@ -12,12 +12,14 @@
     "@vercel/kv": "^0.2.3",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-modal": "^3.16.1"
   },
   "devDependencies": {
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-modal": "^3.16.1",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
