@@ -1,11 +1,13 @@
 import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
-import { useEffect, useRef, RefObject } from "react";
+import { useEffect, useRef, RefObject, useState } from "react";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
   const alertContainerRef = useRef<HTMLDivElement>(null);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     stopInteraction = startInteraction({
@@ -32,7 +34,7 @@ export default function Home() {
         Spartle
       </header>
       <main>
-        <InformationBox />
+        <InformationBox modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
         <div className="alert-container" ref={alertContainerRef}></div>
         <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (

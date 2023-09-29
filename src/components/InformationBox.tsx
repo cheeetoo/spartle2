@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
 
-export default function InformationBox() {
-  const [modalIsOpen, setIsOpen] = useState(false);
+interface Props {
+  modalIsOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
     if (window.localStorage.getItem("seen") === null) {
       setIsOpen(true);
