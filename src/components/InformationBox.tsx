@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
 
 export default function InformationBox() {
-  const [modalIsOpen, setIsOpen] = useState(true);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (window.localStorage.getItem("seen") === null) {
+      setIsOpen(true);
+      window.localStorage.setItem("seen", "true");
+    }
+  }, []);
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.75)",
@@ -26,7 +32,7 @@ export default function InformationBox() {
   };
 
   return (
-    <Modal isOpen={modalIsOpen} style={customStyles} ariaHideApp={false}> {/*ariaHideApp gets rid of screen reader err*/}
+    <Modal isOpen={modalIsOpen} style={customStyles} ariaHideApp={false}>
       <div className="flex flex-col h-full font-sans px-2">
         <div className="flex justify-end p-4">
           <button
@@ -50,9 +56,9 @@ export default function InformationBox() {
         </div>
         <h1 className="font-bold font-sans text-3xl">How To Play</h1>
         <div className="text-xl">Guess the Spartle in 6 tries.</div>
-        <div className="text-base">
+        <div className="text-lg">
           <li className="py-2">Each guess must be a valid 5-letter word.</li>
-          <li>
+          <li className="pb-2">
             The color of the tiles will change to show how close your guess was
             to the word.
           </li>
