@@ -26,7 +26,7 @@ export default function InformationBox() {
   };
 
   return (
-    <Modal isOpen={modalIsOpen} style={customStyles}>
+    <Modal isOpen={modalIsOpen} style={customStyles} ariaHideApp={false}> {/*ariaHideApp gets rid of screen reader err*/}
       <div className="flex flex-col h-full font-sans px-2">
         <div className="flex justify-end p-4">
           <button
