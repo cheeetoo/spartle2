@@ -137,7 +137,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         </span>
         <hr className="my-4" />
         <a
-          href="https://forms.gle/u9KXmrBm5BL9X4yL6"
+          href="https://forms.gle/4zvHKdqVoMJSTmg4A"
           className="text-gray-400 text-xl"
         >
           Report a bug or suggest a feature.
