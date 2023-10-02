@@ -182,7 +182,6 @@ body {
   }
 }
 
-
 @keyframes dance {
   20% {
     transform: translateY(-50%);

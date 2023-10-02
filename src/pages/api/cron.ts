@@ -4,7 +4,7 @@ import { client } from "@/lib/kv_client";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const authToken = (req.headers.authorization || "").split("Bearer ").at(1);
 
@@ -19,7 +19,7 @@ export default async function handler(
       process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
       undefined,
       process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, "\n"), // chatgpt stuff, fixed an error so keeping
-      ["https://www.googleapis.com/auth/spreadsheets"]
+      ["https://www.googleapis.com/auth/spreadsheets"],
     ),
   });
 
@@ -35,7 +35,7 @@ export default async function handler(
   const word = rows[0] ? rows[0][0] : "rhino";
   client.set("word", word);
 
-  const dict: string[] = await client.get("dict") ?? [""];
+  const dict: string[] = (await client.get("dict")) ?? [""];
   if (!dict.includes(word)) {
     dict.push(word);
     client.set("dict", JSON.stringify(dict));
