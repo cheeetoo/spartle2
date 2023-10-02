@@ -130,11 +130,12 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           <b>U</b> is not in the word in any spot.
         </div>
         <hr className="my-4" />
+		<span className="text-gray-400 text-xl">Brought To You by the SPA Computer Science Club</span>
         <a
-          href="mailto:25finniganc@students.spa.edu?subject=Bug%20Report/Feature%20Request"
+          href="https://forms.gle/u9KXmrBm5BL9X4yL6"
           className="text-gray-400 text-xl"
         >
-          Report a bug or request a feature/change.
+		(Bug Reports)
         </a>
       </div>
     </Modal>
