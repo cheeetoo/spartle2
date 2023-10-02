@@ -40,5 +40,5 @@ export default async function handler(
     },
   });
 
-  res.status(200).json({ response: rows });
+  res.status(200).end();
 }
