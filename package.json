@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.0.2",
     "@vercel/kv": "^0.2.3",
     "googleapis": "^126.0.1",
     "next": "latest",
