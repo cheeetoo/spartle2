@@ -65,7 +65,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         <div className="text-xl">Guess the Spartle in 6 tries.</div>
         <div className="text-lg">
           <li className="py-2">Each guess must be a valid 5-letter word.</li>
-          <li className="pb-2">
+          <li className="pb-2 ">
             The color of the tiles will change to show how close your guess was
             to the word.
           </li>
@@ -133,7 +133,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         </div>
         <hr className="my-4" />
         <span className="text-xl">
-          Brought To You by the SPA Computer Science Club
+          Brought to you by the SPA Computer Science Club.
         </span>
         <hr className="my-4" />
         <a
