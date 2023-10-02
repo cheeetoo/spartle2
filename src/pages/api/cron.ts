@@ -32,11 +32,12 @@ export default async function handler(
 
   // get values and set first cell of first column to word in kv
   const rows = response.data.values ?? [];
-  client.set("word", rows[0][0]);
+  const word = rows[0] ? rows[0][0] : "rhino";
+  client.set("word", word);
 
   const dict: string[] = JSON.parse(await client.get("dict") ?? "");
-  if (!dict.includes(rows[0][0])) {
-    dict.push(rows[0][0]);
+  if (!dict.includes(word)) {
+    dict.push(word);
     client.set("dict", JSON.stringify(dict));
   }
 
