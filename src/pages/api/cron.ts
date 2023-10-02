@@ -34,6 +34,12 @@ export default async function handler(
   const rows = response.data.values ?? [];
   client.set("word", rows[0][0]);
 
+  const dict: string[] = JSON.parse(await client.get("dict") ?? "");
+  if (!dict.includes(rows[0][0])) {
+    dict.push(rows[0][0]);
+    client.set("dict", JSON.stringify(dict));
+  }
+
   // sheets magick
   rows?.shift();
   rows.push([""]);
