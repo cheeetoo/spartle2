@@ -132,14 +132,15 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           <b>U</b> is not in the word in any spot.
         </div>
         <hr className="my-4" />
-        <span className="text-gray-400 text-xl">
+        <span className="text-xl">
           Brought To You by the SPA Computer Science Club
         </span>
+        <hr className="my-4" />
         <a
           href="https://forms.gle/u9KXmrBm5BL9X4yL6"
           className="text-gray-400 text-xl"
         >
-          (Bug Reports)
+          Report a bug or suggest a feature.
         </a>
       </div>
     </Modal>
