@@ -16,8 +16,7 @@ export default function Home() {
       alertContainer: alertContainerRef,
     });
     const getData = async () => {
-      const dictText = await (await fetch("/words")).text();
-      dictionary = dictText.split("\n");
+      dictionary = (await (await fetch("/api/dict")).json()).dict;
       const wordText = await (await fetch("/api/word")).json();
       targetWord = wordText.word;
     };
