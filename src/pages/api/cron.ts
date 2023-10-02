@@ -6,6 +6,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const authToken = (req.headers.authorization || "").split("Bearer ").at(1);
+  console.log(authToken);
+
+  if (!authToken || authToken != process.env.CRON_SECRET) res.status(401).end();
+
   const sheets = google.sheets({
     version: "v4",
     auth: new google.auth.JWT(
@@ -24,8 +29,8 @@ export default async function handler(
   });
 
   // get values and set first cell of first column to word in kv
-  const rows = response.data.values??[];
-  client.set("word", rows[0][0])
+  const rows = response.data.values ?? [];
+  client.set("word", rows[0][0]);
 
   // sheets magick
   rows?.shift();
