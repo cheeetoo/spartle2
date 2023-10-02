@@ -134,7 +134,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           href="mailto:25finniganc@students.spa.edu?subject=Bug%20Report/Feature%20Request"
           className="text-gray-400 text-xl"
         >
-          Report a bug or request a feature.
+          Report a bug or request a feature/change.
         </a>
       </div>
     </Modal>
