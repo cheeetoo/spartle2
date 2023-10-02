@@ -7,9 +7,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const authToken = (req.headers.authorization || "").split("Bearer ").at(1);
-  console.log(authToken);
 
-  if (!authToken || authToken != process.env.CRON_SECRET) res.status(401).end();
+  if (!authToken || authToken != process.env.CRON_SECRET) {
+    res.status(401).end();
+    return;
+  }
 
   const sheets = google.sheets({
     version: "v4",
