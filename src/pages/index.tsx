@@ -1,7 +1,6 @@
 import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
 import { useEffect, useRef, RefObject, useState } from "react";
-import { client } from "@/lib/kv_client";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
@@ -17,7 +16,7 @@ export default function Home() {
       alertContainer: alertContainerRef,
     });
     const getData = async () => {
-      dictionary = JSON.parse(await client.get("dict") ?? "");
+      dictionary = (await (await fetch("/api/dict")).json()).dict;
       const wordText = await (await fetch("/api/word")).json();
       targetWord = wordText.word;
     };
