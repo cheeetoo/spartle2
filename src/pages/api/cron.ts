@@ -35,7 +35,7 @@ export default async function handler(
   const word = rows[0] ? rows[0][0] : "rhino";
   client.set("word", word);
 
-  const dict: string[] = JSON.parse(await client.get("dict") ?? "");
+  const dict: string[] = await client.get("dict") ?? [""];
   if (!dict.includes(word)) {
     dict.push(word);
     client.set("dict", JSON.stringify(dict));
