@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import Modal from "react-modal";
 
 interface Props {
@@ -39,31 +39,33 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   return (
     <Modal isOpen={modalIsOpen} style={customStyles} ariaHideApp={false}>
       <div className="flex flex-col h-full font-sans px-2">
-        <div className="flex justify-end p-4">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="focus:outline-none"
-          >
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              height="20"
-              viewBox="0 0 24 24"
-              width="20"
-              className="h-5 w-5"
+        <div className="flex justify-between items-center">
+          <h1 className="font-bold font-sans text-3xl">How To Play</h1>
+          <div className="flex justify-end p-4">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="focus:outline-none"
             >
-              <path
-                fill="#ffffff"
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              ></path>
-            </svg>
-          </button>
+              <svg
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                height="20"
+                viewBox="0 0 24 24"
+                width="20"
+                className="h-5 w-5"
+              >
+                <path
+                  fill="#ffffff"
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </div>
-        <h1 className="font-bold font-sans text-3xl">How To Play</h1>
         <div className="text-xl">Guess the Spartle in 6 tries.</div>
         <div className="text-lg">
           <li className="py-2">Each guess must be a valid 5-letter word.</li>
-          <li className="pb-2">
+          <li className="pb-2 ">
             The color of the tiles will change to show how close your guess was
             to the word.
           </li>
@@ -130,12 +132,15 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           <b>U</b> is not in the word in any spot.
         </div>
         <hr className="my-4" />
-		<span className="text-gray-400 text-xl">Brought To You by the SPA Computer Science Club</span>
+        <span className="text-xl">
+          Brought to you by the SPA Computer Science Club.
+        </span>
+        <hr className="my-4" />
         <a
-          href="https://forms.gle/u9KXmrBm5BL9X4yL6"
+          href="https://forms.gle/4zvHKdqVoMJSTmg4A"
           className="text-gray-400 text-xl"
         >
-		(Bug Reports)
+          Report a bug or suggest a feature.
         </a>
       </div>
     </Modal>
