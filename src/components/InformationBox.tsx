@@ -8,9 +8,9 @@ interface Props {
 
 export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
-    if (window.localStorage.getItem("seen") === null) {
+    if (!document.cookie.includes("seenPopup=true")) {
       setIsOpen(true);
-      window.localStorage.setItem("seen", "true");
+      document.cookie = "seenPopup=true; path=/; max-age=31536000";
     }
   }, []);
   const customStyles = {
