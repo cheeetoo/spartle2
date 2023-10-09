@@ -10,7 +10,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
     if (!document.cookie.includes("seenPopup=true")) {
       setIsOpen(true);
-      document.cookie = "seenPopup=true; path=/; max-age=31536000";
+      document.cookie = "seenPopup=true; path=/; max-age=31536000; SameSite=None; Secure";
     }
   }, []);
   const customStyles = {
