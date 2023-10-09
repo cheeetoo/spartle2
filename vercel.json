@@ -4,5 +4,15 @@
       "path": "/api/cron",
       "schedule": "0 6 * * *"
     }
-  ]
+  ],
+  "headers": [{
+    "source": "/(.*)",
+    "headers": [
+      {
+        "key": "Content-Security-Policy",
+        "value": "frame-ancestors *;"
+      }
+    ]
+  }]
+
 }
