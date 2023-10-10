@@ -73,63 +73,63 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         <div className="font-bold text-xl">Examples</div>
         <div className="my-2 flex">
           <div className="smalltile w-10 h-10 mr-1 bg-[#004a8f]">
-            <p className="text-2xl">W</p>
+            <p className="text-2xl">C</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">E</p>
+            <p className="text-2xl">L</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
             <p className="text-2xl">A</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">R</p>
-          </div>
-          <div className="tile w-10 h-10">
-            <p className="text-2xl">Y</p>
-          </div>
-        </div>
-        <div className="text-xl">
-          <b>W</b> is in the word and in the correct spot.
-        </div>
-        <div className="my-2 flex">
-          <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">P</p>
-          </div>
-          <div className="smalltile w-10 h-10 mr-1 bg-[#fec10b]">
-            <p className="text-2xl">I</p>
-          </div>
-          <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">L</p>
-          </div>
-          <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">L</p>
+            <p className="text-2xl">S</p>
           </div>
           <div className="tile w-10 h-10">
             <p className="text-2xl">S</p>
           </div>
         </div>
         <div className="text-xl">
-          <b>I</b> is in the word but in the correct spot.
+          <b>C</b> is in the word and in the correct spot.
         </div>
         <div className="my-2 flex">
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">V</p>
+            <p className="text-2xl">N</p>
+          </div>
+          <div className="smalltile w-10 h-10 mr-1 bg-[#fec10b]">
+            <p className="text-2xl">O</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">A</p>
+            <p className="text-2xl">T</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">G</p>
-          </div>
-          <div className="smalltile w-10 h-10 mr-1 bg-[#39393c]">
-            <p className="text-2xl">U</p>
+            <p className="text-2xl">E</p>
           </div>
           <div className="tile w-10 h-10">
-            <p className="text-2xl">E</p>
+            <p className="text-2xl">S</p>
           </div>
         </div>
         <div className="text-xl">
-          <b>U</b> is not in the word in any spot.
+          <b>O</b> is in the word but in the correct spot.
+        </div>
+        <div className="my-2 flex">
+          <div className="tile w-10 h-10 mr-1">
+            <p className="text-2xl">Q</p>
+          </div>
+          <div className="tile w-10 h-10 mr-1">
+            <p className="text-2xl">U</p>
+          </div>
+          <div className="tile w-10 h-10 mr-1">
+            <p className="text-2xl">I</p>
+          </div>
+          <div className="smalltile w-10 h-10 mr-1 bg-[#39393c]">
+            <p className="text-2xl">Z</p>
+          </div>
+          <div className="tile w-10 h-10">
+            <p className="text-2xl">S</p>
+          </div>
+        </div>
+        <div className="text-xl">
+          <b>Z</b> is not in the word in any spot.
         </div>
         <hr className="my-4" />
         <span className="text-xl">
