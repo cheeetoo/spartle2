@@ -31,7 +31,7 @@ export default function Home() {
     <>
       <header className="text-white flex justify-between items-center border-b-2 w-full overflow-hidden p-4 mb-4 border-[#39393c]">
         <div></div>
-        <div className="text-4xl font-bold font-sans">Spartle</div>
+        <div className="sm:text-4xl font-bold font-sans text-3xl">Spartle</div>
         <button onClick={() => setIsOpen(true)}>
           <svg
             aria-hidden="true"
@@ -88,7 +88,7 @@ function startInteraction({ keyboard, guessGrid, alertContainer }: Refs) {
 
 function handleMouseClick(
   e: any,
-  { keyboard, guessGrid, alertContainer }: Refs,
+  { keyboard, guessGrid, alertContainer }: Refs
 ) {
   if (e.target.matches("[data-key]")) {
     pressKey(e.target.dataset.key, guessGrid);
@@ -129,7 +129,7 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
     return;
   }
   const nextTile = guessGrid.current?.querySelector(
-    ":not([data-letter])",
+    ":not([data-letter])"
   ) as HTMLDivElement;
   if (!nextTile) return;
   nextTile.dataset.letter = key.toLowerCase();
@@ -141,7 +141,7 @@ function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
     () => {
       nextTile.classList.remove("zoom");
     },
-    { once: true },
+    { once: true }
   );
 }
 
@@ -173,7 +173,7 @@ function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
   }
 
   activeTiles.forEach((...params) =>
-    flipTile(...params, guess, keyboard, guessGrid, alertContainer),
+    flipTile(...params, guess, keyboard, guessGrid, alertContainer)
   );
 }
 
@@ -184,17 +184,14 @@ function flipTile(
   guess: any,
   keyboard: RefObject<HTMLDivElement>,
   guessGrid: RefObject<HTMLDivElement>,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const letter = tile.dataset.letter;
   const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
   if (!key) return;
-  setTimeout(
-    () => {
-      tile.classList.add("flip");
-    },
-    (index * 500) / 2,
-  ); // NOTE: FLIP_ANIMATION_DURATION is 500
+  setTimeout(() => {
+    tile.classList.add("flip");
+  }, (index * 500) / 2); // NOTE: FLIP_ANIMATION_DURATION is 500
 
   tile.addEventListener(
     "transitionend",
@@ -218,11 +215,11 @@ function flipTile(
             // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
             checkWinLose(guess, array, guessGrid, alertContainer);
           },
-          { once: true },
+          { once: true }
         );
       }
     },
-    { once: true },
+    { once: true }
   );
 }
 
@@ -233,7 +230,7 @@ function getActiveTiles(guessGrid: RefObject<HTMLDivElement>) {
 function showAlert(
   message: any,
   duration: number | null = 1000,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   const alert = document.createElement("div");
   alert.textContent = message;
@@ -258,7 +255,7 @@ function shakeTiles(tiles: any) {
       () => {
         tile.classList.remove("shake");
       },
-      { once: true },
+      { once: true }
     );
   });
 }
@@ -267,7 +264,7 @@ function checkWinLose(
   guess: any,
   tiles: any,
   guessGrid: RefObject<HTMLDivElement>,
-  alertContainer: RefObject<HTMLDivElement>,
+  alertContainer: RefObject<HTMLDivElement>
 ) {
   if (guess === targetWord) {
     showAlert("You Win!!! 🎉🎉", 6000, alertContainer);
@@ -277,32 +274,29 @@ function checkWinLose(
   }
 
   const remainingTiles = guessGrid.current?.querySelectorAll(
-    ":not([data-letter])",
+    ":not([data-letter])"
   );
   if (!remainingTiles) return;
   if (remainingTiles.length === 0) {
     showAlert(
       "Correct word: " + targetWord.toUpperCase(),
       null,
-      alertContainer,
+      alertContainer
     );
     stopInteraction();
   }
 }
 function danceTiles(tiles: any) {
   tiles.forEach((tile: any, index: any) => {
-    setTimeout(
-      () => {
-        tile.classList.add("dance");
-        tile.addEventListener(
-          "animationend",
-          () => {
-            tile.classList.remove("dance");
-          },
-          { once: true },
-        );
-      },
-      (index * 500) / 5,
-    ); // NOTE: DANCE_ANIMATION_DURATION is 500 here
+    setTimeout(() => {
+      tile.classList.add("dance");
+      tile.addEventListener(
+        "animationend",
+        () => {
+          tile.classList.remove("dance");
+        },
+        { once: true }
+      );
+    }, (index * 500) / 5); // NOTE: DANCE_ANIMATION_DURATION is 500 here
   });
 }
