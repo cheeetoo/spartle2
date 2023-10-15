@@ -113,23 +113,23 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         </div>
         <div className="my-2 flex">
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">Q</p>
+            <p className="text-2xl">B</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">U</p>
+            <p className="text-2xl">O</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
-            <p className="text-2xl">I</p>
+            <p className="text-2xl">O</p>
           </div>
           <div className="smalltile w-10 h-10 mr-1 bg-[#39393c]">
-            <p className="text-2xl">Z</p>
+            <p className="text-2xl">K</p>
           </div>
           <div className="tile w-10 h-10">
             <p className="text-2xl">S</p>
           </div>
         </div>
         <div className="text-xl">
-          <b>Z</b> is not in the word in any spot.
+          <b>K</b> is not in the word in any spot.
         </div>
         <hr className="my-4" />
         <span className="text-xl">
