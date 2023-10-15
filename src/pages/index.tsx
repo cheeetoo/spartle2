@@ -31,7 +31,7 @@ export default function Home() {
     <>
       <header className="text-white flex justify-between items-center border-b-2 w-full overflow-hidden p-4 mb-4 border-[#39393c]">
         <div></div>
-        <div className="text-4xl font-bold font-sans">Spartle</div>
+        <div className="sm:text-4xl font-bold font-sans text-3xl">Spartle</div>
         <button onClick={() => setIsOpen(true)}>
           <svg
             aria-hidden="true"
