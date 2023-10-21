@@ -14,11 +14,7 @@ export default async function Home() {
   let stopInteraction: () => void;
 
   useEffect(() => {
-    stopInteraction = startInteraction({
-      keyboard: keyboardRef,
-      guessGrid: guessGridRef,
-      alertContainer: alertContainerRef,
-    });
+    stopInteraction = startInteraction();
 
     return () => {
       stopInteraction();
@@ -58,17 +54,11 @@ export default async function Home() {
     </>
   );
 
-  interface Refs {
-    keyboard: RefObject<HTMLDivElement>;
-    guessGrid: RefObject<HTMLDivElement>;
-    alertContainer: RefObject<HTMLDivElement>;
-  }
-
-  function startInteraction({ keyboard, guessGrid, alertContainer }: Refs) {
+  function startInteraction() {
     const handleClick = (e: Event) =>
-      handleMouseClick(e, { keyboard, guessGrid, alertContainer });
+      handleMouseClick(e);
     const handleKey = (e: KeyboardEvent) =>
-      handleKeyPress(e, { keyboard, guessGrid, alertContainer });
+      handleKeyPress(e);
 
     document.addEventListener("click", handleClick);
     document.addEventListener("keydown", handleKey);
@@ -79,52 +69,48 @@ export default async function Home() {
     };
   }
 
-  function handleMouseClick(
-    e: any,
-    { keyboard, guessGrid, alertContainer }: Refs
-  ) {
+  function handleMouseClick(e: any) {
     if (e.target.matches("[data-key]")) {
-      pressKey(e.target.dataset.key, guessGrid);
+      pressKey(e.target.dataset.key);
       return;
     }
 
     if (e.target.matches("[data-enter]")) {
-      submitGuess({ keyboard, guessGrid, alertContainer });
+      submitGuess();
       return;
     }
 
     if (e.target.matches("[data-delete]")) {
-      deleteKey(guessGrid);
+      deleteKey();
       return;
     }
   }
 
   function handleKeyPress(
     e: any,
-    { keyboard, guessGrid, alertContainer }: Refs
   ) {
     if (e.key === "Enter") {
-      submitGuess({ keyboard, guessGrid, alertContainer });
+      submitGuess();
       return;
     }
 
     if (e.key === "Backspace" || e.key === "Delete") {
-      deleteKey(guessGrid);
+      deleteKey();
       return;
     }
 
     if (e.key.match(/^[a-z]$/)) {
-      pressKey(e.key, guessGrid);
+      pressKey(e.key);
       return;
     }
   }
 
-  function pressKey(key: any, guessGrid: RefObject<HTMLDivElement>) {
-    const activeTiles = getActiveTiles(guessGrid) ?? [];
+  function pressKey(key: any) {
+    const activeTiles = getActiveTiles(guessGridRef) ?? [];
     if (activeTiles.length >= 5) {
       return;
     }
-    const nextTile = guessGrid.current?.querySelector(
+    const nextTile = guessGridRef.current?.querySelector(
       ":not([data-letter])"
     ) as HTMLDivElement;
     if (!nextTile) return;
@@ -141,8 +127,8 @@ export default async function Home() {
     );
   }
 
-  function deleteKey(guessGrid: RefObject<HTMLDivElement>) {
-    const activeTiles = getActiveTiles(guessGrid);
+  function deleteKey() {
+    const activeTiles = getActiveTiles(guessGridRef);
     if (!activeTiles) return;
     const lastTile = activeTiles[activeTiles.length - 1] as HTMLElement;
     if (!lastTile) return;
@@ -151,10 +137,10 @@ export default async function Home() {
     delete lastTile.dataset.letter;
   }
 
-  function submitGuess({ keyboard, guessGrid, alertContainer }: Refs) {
-    const activeTiles = Array.from(getActiveTiles(guessGrid) ?? []);
+  function submitGuess() {
+    const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
     if (activeTiles.length !== 5) {
-      showAlert("Not enough letters!", 1000, alertContainer);
+      showAlert("Not enough letters!", 1000);
       shakeTiles(activeTiles);
       return;
     }
@@ -163,13 +149,13 @@ export default async function Home() {
       return word + (tile as HTMLDivElement).dataset.letter;
     }, "");
     if (!dictionary.includes(guess)) {
-      showAlert("Not in word list", 1000, alertContainer);
+      showAlert("Not in word list", 1000);
       shakeTiles(activeTiles);
       return;
     }
 
     activeTiles.forEach((...params) =>
-      flipTile(...params, guess, keyboard, guessGrid, alertContainer)
+      flipTile(...params, guess)
     );
   }
 
@@ -178,12 +164,9 @@ export default async function Home() {
     index: any,
     array: any,
     guess: any,
-    keyboard: RefObject<HTMLDivElement>,
-    guessGrid: RefObject<HTMLDivElement>,
-    alertContainer: RefObject<HTMLDivElement>
   ) {
     const letter = tile.dataset.letter;
-    const key = keyboard.current?.querySelector(`[data-key="${letter}"i]`);
+    const key = keyboardRef.current?.querySelector(`[data-key="${letter}"i]`);
     if (!key) return;
     setTimeout(() => {
       tile.classList.add("flip");
@@ -209,7 +192,7 @@ export default async function Home() {
             "transitionend",
             () => {
               // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
-              checkWinLose(guess, array, guessGrid, alertContainer);
+              checkWinLose(guess, array);
             },
             { once: true }
           );
@@ -226,12 +209,11 @@ export default async function Home() {
   function showAlert(
     message: any,
     duration: number | null = 1000,
-    alertContainer: RefObject<HTMLDivElement>
   ) {
     const alert = document.createElement("div");
     alert.textContent = message;
     alert.classList.add("alert");
-    alertContainer.current?.prepend(alert);
+    alertContainerRef.current?.prepend(alert);
     if (duration == null) {
       return;
     }
@@ -259,17 +241,15 @@ export default async function Home() {
   function checkWinLose(
     guess: any,
     tiles: any,
-    guessGrid: RefObject<HTMLDivElement>,
-    alertContainer: RefObject<HTMLDivElement>
   ) {
     if (guess === targetWord) {
-      showAlert("You Win!!! 🎉🎉", 6000, alertContainer);
+      showAlert("You Win!!! 🎉🎉", 6000);
       danceTiles(tiles);
       stopInteraction();
       return;
     }
 
-    const remainingTiles = guessGrid.current?.querySelectorAll(
+    const remainingTiles = guessGridRef.current?.querySelectorAll(
       ":not([data-letter])"
     );
     if (!remainingTiles) return;
@@ -277,7 +257,6 @@ export default async function Home() {
       showAlert(
         "Correct word: " + targetWord.toUpperCase(),
         null,
-        alertContainer
       );
       stopInteraction();
     }
