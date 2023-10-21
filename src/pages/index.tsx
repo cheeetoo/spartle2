@@ -2,12 +2,16 @@ import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
 import { useEffect, useRef, RefObject, useState } from "react";
 
-export default function Home() {
+export default async function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   const [modalIsOpen, setIsOpen] = useState(false);
+  const dictionary: string[] = (await (await fetch("/api/dict")).json()).dict;
+  const targetWord = (await (await fetch("/api/word")).json()).word;
+
+  let stopInteraction: () => void;
 
   useEffect(() => {
     stopInteraction = startInteraction({
@@ -15,12 +19,6 @@ export default function Home() {
       guessGrid: guessGridRef,
       alertContainer: alertContainerRef,
     });
-    const getData = async () => {
-      dictionary = (await (await fetch("/api/dict")).json()).dict;
-      const wordText = await (await fetch("/api/word")).json();
-      targetWord = wordText.word;
-    };
-    getData();
 
     return () => {
       stopInteraction();
@@ -59,9 +57,6 @@ export default function Home() {
       </main>
     </>
   );
-  let stopInteraction: () => void;
-  let dictionary: string[];
-  let targetWord: string;
 
   interface Refs {
     keyboard: RefObject<HTMLDivElement>;
