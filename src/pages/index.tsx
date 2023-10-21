@@ -12,7 +12,7 @@ export default function Home() {
   const [dataFetched, setDataFetched] = useState(false);
 
   let stopInteraction: () => void;
-  let submitGuess: () => void;
+  let submitGuess: () => void = () => {};
 
   useEffect(() => {
     stopInteraction = startInteraction();
@@ -88,7 +88,7 @@ export default function Home() {
             </button>
           ))}
           <div className="space"></div>
-          <button data-enter className="key large">
+          <button data-enter className="key large" onClick={submitGuess}>
             Enter
           </button>
           {"ZXCVBNM".split("").map((letter) => (
@@ -96,7 +96,7 @@ export default function Home() {
               {letter}
             </button>
           ))}
-          <button data-delete className="key large">
+          <button data-delete className="key large" onClick={deleteKey}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -130,16 +130,6 @@ export default function Home() {
   function handleMouseClick(e: any) {
     if (e.target.matches("[data-key]")) {
       pressKey(e.target.dataset.key);
-      return;
-    }
-
-    if (e.target.matches("[data-enter]")) {
-      submitGuess();
-      return;
-    }
-
-    if (e.target.matches("[data-delete]")) {
-      deleteKey();
       return;
     }
   }
