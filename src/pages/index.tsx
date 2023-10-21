@@ -15,8 +15,9 @@ export default function Home() {
   let submitGuess: () => void = () => {};
 
   useEffect(() => {
-    stopInteraction = startInteraction();
+    stopInteraction = startInteraction(); // eslint-disable-line
     submitGuess = () => {
+      // eslint-disable-line
       const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
       if (activeTiles.length !== 5) {
         showAlert("Not enough letters!", 1000);

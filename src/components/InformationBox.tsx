@@ -14,7 +14,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         365 * 24 * 60 * 60
       }; SameSite=None; Secure`;
     }
-  }, []);
+  }, [setIsOpen]);
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.75)",
