@@ -2,24 +2,51 @@ import InformationBox from "@/components/InformationBox";
 import Keyboard from "@/components/Keyboard";
 import { useEffect, useRef, RefObject, useState } from "react";
 
-export default async function Home() {
+export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
   const alertContainerRef = useRef<HTMLDivElement>(null);
 
   const [modalIsOpen, setIsOpen] = useState(false);
-  const dictionary: string[] = (await (await fetch("/api/dict")).json()).dict;
-  const targetWord = (await (await fetch("/api/word")).json()).word;
+  const [dictionary, setDictionary] = useState<string[]>([]);
+  const [targetWord, setTargetWord] = useState<string>("");
+  const [dataFetched, setDataFetched] = useState(false);
 
   let stopInteraction: () => void;
+  let submitGuess: () => void;
 
   useEffect(() => {
     stopInteraction = startInteraction();
+    submitGuess = () => {
+      const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
+      if (activeTiles.length !== 5) {
+        showAlert("Not enough letters!", 1000);
+        shakeTiles(activeTiles);
+        return;
+      }
+
+      const guess = activeTiles.reduce((word, tile) => {
+        return word + (tile as HTMLDivElement).dataset.letter;
+      }, "");
+      if (!dictionary.includes(guess)) {
+        showAlert("Not in word list", 1000);
+        shakeTiles(activeTiles);
+        return;
+      }
+
+      activeTiles.forEach((...params) => flipTile(...params, guess));
+    };
+    const getData = async () => {
+      setDictionary((await (await fetch("/api/dict")).json()).dict);
+      setTargetWord((await (await fetch("/api/word")).json()).word);
+      setDataFetched(true);
+    };
+    getData();
 
     return () => {
       stopInteraction();
     };
-  }, []);
+  }, [dataFetched]);
 
   return (
     <>
@@ -55,10 +82,8 @@ export default async function Home() {
   );
 
   function startInteraction() {
-    const handleClick = (e: Event) =>
-      handleMouseClick(e);
-    const handleKey = (e: KeyboardEvent) =>
-      handleKeyPress(e);
+    const handleClick = (e: Event) => handleMouseClick(e);
+    const handleKey = (e: KeyboardEvent) => handleKeyPress(e);
 
     document.addEventListener("click", handleClick);
     document.addEventListener("keydown", handleKey);
@@ -86,9 +111,7 @@ export default async function Home() {
     }
   }
 
-  function handleKeyPress(
-    e: any,
-  ) {
+  function handleKeyPress(e: any) {
     if (e.key === "Enter") {
       submitGuess();
       return;
@@ -111,7 +134,7 @@ export default async function Home() {
       return;
     }
     const nextTile = guessGridRef.current?.querySelector(
-      ":not([data-letter])"
+      ":not([data-letter])",
     ) as HTMLDivElement;
     if (!nextTile) return;
     nextTile.dataset.letter = key.toLowerCase();
@@ -123,7 +146,7 @@ export default async function Home() {
       () => {
         nextTile.classList.remove("zoom");
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -137,40 +160,16 @@ export default async function Home() {
     delete lastTile.dataset.letter;
   }
 
-  function submitGuess() {
-    const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
-    if (activeTiles.length !== 5) {
-      showAlert("Not enough letters!", 1000);
-      shakeTiles(activeTiles);
-      return;
-    }
-
-    const guess = activeTiles.reduce((word, tile) => {
-      return word + (tile as HTMLDivElement).dataset.letter;
-    }, "");
-    if (!dictionary.includes(guess)) {
-      showAlert("Not in word list", 1000);
-      shakeTiles(activeTiles);
-      return;
-    }
-
-    activeTiles.forEach((...params) =>
-      flipTile(...params, guess)
-    );
-  }
-
-  function flipTile(
-    tile: any,
-    index: any,
-    array: any,
-    guess: any,
-  ) {
+  function flipTile(tile: any, index: any, array: any, guess: any) {
     const letter = tile.dataset.letter;
     const key = keyboardRef.current?.querySelector(`[data-key="${letter}"i]`);
     if (!key) return;
-    setTimeout(() => {
-      tile.classList.add("flip");
-    }, (index * 500) / 2); // NOTE: FLIP_ANIMATION_DURATION is 500
+    setTimeout(
+      () => {
+        tile.classList.add("flip");
+      },
+      (index * 500) / 2,
+    ); // NOTE: FLIP_ANIMATION_DURATION is 500
 
     tile.addEventListener(
       "transitionend",
@@ -194,11 +193,11 @@ export default async function Home() {
               // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
               checkWinLose(guess, array);
             },
-            { once: true }
+            { once: true },
           );
         }
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -206,10 +205,7 @@ export default async function Home() {
     return guessGrid.current?.querySelectorAll('[data-state="active"]');
   }
 
-  function showAlert(
-    message: any,
-    duration: number | null = 1000,
-  ) {
+  function showAlert(message: any, duration: number | null = 1000) {
     const alert = document.createElement("div");
     alert.textContent = message;
     alert.classList.add("alert");
@@ -233,15 +229,12 @@ export default async function Home() {
         () => {
           tile.classList.remove("shake");
         },
-        { once: true }
+        { once: true },
       );
     });
   }
 
-  function checkWinLose(
-    guess: any,
-    tiles: any,
-  ) {
+  function checkWinLose(guess: any, tiles: any) {
     if (guess === targetWord) {
       showAlert("You Win!!! 🎉🎉", 6000);
       danceTiles(tiles);
@@ -250,29 +243,29 @@ export default async function Home() {
     }
 
     const remainingTiles = guessGridRef.current?.querySelectorAll(
-      ":not([data-letter])"
+      ":not([data-letter])",
     );
     if (!remainingTiles) return;
     if (remainingTiles.length === 0) {
-      showAlert(
-        "Correct word: " + targetWord.toUpperCase(),
-        null,
-      );
+      showAlert("Correct word: " + targetWord.toUpperCase(), null);
       stopInteraction();
     }
   }
   function danceTiles(tiles: any) {
     tiles.forEach((tile: any, index: any) => {
-      setTimeout(() => {
-        tile.classList.add("dance");
-        tile.addEventListener(
-          "animationend",
-          () => {
-            tile.classList.remove("dance");
-          },
-          { once: true }
-        );
-      }, (index * 500) / 5); // NOTE: DANCE_ANIMATION_DURATION is 500 here
+      setTimeout(
+        () => {
+          tile.classList.add("dance");
+          tile.addEventListener(
+            "animationend",
+            () => {
+              tile.classList.remove("dance");
+            },
+            { once: true },
+          );
+        },
+        (index * 500) / 5,
+      ); // NOTE: DANCE_ANIMATION_DURATION is 500 here
     });
   }
 }
