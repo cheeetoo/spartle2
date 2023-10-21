@@ -10,7 +10,9 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
     if (!document.cookie.split("; ").find((row) => row.startsWith("seen="))) {
       setIsOpen(true);
-      document.cookie = `seen=true; max-age=${365 * 24 * 60 * 60}`;
+      document.cookie = `seen=true; max-age=${
+        365 * 24 * 60 * 60
+      }; SameSite=None; Secure`;
     }
   }, []);
   const customStyles = {
