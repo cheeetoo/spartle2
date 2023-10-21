@@ -8,9 +8,11 @@ interface Props {
 
 export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
-    if (window.localStorage.getItem("seen") === null) {
+    if (!document.cookie.split("; ").find((row) => row.startsWith("seen="))) {
       setIsOpen(true);
-      window.localStorage.setItem("seen", "true");
+      document.cookie = `seen=true; max-age=${
+        365 * 24 * 60 * 60
+      }; SameSite=None; Secure`;
     }
   }, []);
   const customStyles = {
