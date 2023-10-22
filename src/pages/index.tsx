@@ -89,7 +89,7 @@ export default function Home() {
             </button>
           ))}
           <div className="space"></div>
-          <button data-enter className="key large" onClick={submitGuess}>
+          <button data-enter className="key large">
             Enter
           </button>
           {"ZXCVBNM".split("").map((letter) => (
@@ -131,6 +131,10 @@ export default function Home() {
   function handleMouseClick(e: any) {
     if (e.target.matches("[data-key]")) {
       pressKey(e.target.dataset.key);
+      return;
+    }
+    if (e.target.matches("[data-enter]")) {
+      submitGuess();
       return;
     }
   }
