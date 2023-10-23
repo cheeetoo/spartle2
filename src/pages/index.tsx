@@ -1,15 +1,11 @@
 import InformationBox from "@/components/InformationBox";
 import { useEffect, useRef, RefObject, useState } from "react";
-
-enum Result {
-  SUCCESS,
-  FAILURE,
-}
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
-  const alertContainerRef = useRef<HTMLDivElement>(null);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [dictionary, setDictionary] = useState<string[]>([]);
@@ -75,7 +71,7 @@ export default function Home() {
       </header>
       <main>
         <InformationBox modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
-        <div className="alert-container" ref={alertContainerRef}></div>
+        <div className="alert-container"></div>
         <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (
             <div className="tile" key={index}></div>
@@ -117,6 +113,18 @@ export default function Home() {
           </button>
         </div>
       </main>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 
@@ -238,19 +246,19 @@ export default function Home() {
   }
 
   function showAlert(message: any, duration: number | null = 1000) {
-    const alert = document.createElement("div");
-    alert.textContent = message;
-    alert.classList.add("alert");
-    alertContainerRef.current?.prepend(alert);
     if (duration == null) {
       return;
     }
-    setTimeout(() => {
-      alert.classList.add("hide");
-      alert.addEventListener("transitionend", () => {
-        alert.remove();
-      });
-    }, duration);
+    toast(message, {
+      position: "top-center",
+      autoClose: duration,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   }
 
   function shakeTiles(tiles: any) {
