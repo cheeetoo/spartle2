@@ -9,6 +9,9 @@
   font-family: Arial;
 }
 
+.Toastify__toast-container--top-center {
+  margin-top: 10vh;
+}
 body {
   background-color: #121213;
   display: flex;
