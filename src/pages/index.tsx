@@ -1,6 +1,11 @@
 import InformationBox from "@/components/InformationBox";
 import { useEffect, useRef, RefObject, useState } from "react";
 
+enum Result {
+  SUCCESS,
+  FAILURE,
+}
+
 export default function Home() {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const guessGridRef = useRef<HTMLDivElement>(null);
@@ -218,7 +223,6 @@ export default function Home() {
           tile.addEventListener(
             "transitionend",
             () => {
-              // startInteraction({ keyboard, guessGrid, alertContainer }); // wtf is going on here
               checkWinLose(guess, array);
             },
             { once: true },
