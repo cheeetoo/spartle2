@@ -19,7 +19,7 @@ export default function Home() {
     stopInteraction = startInteraction(); // eslint-disable-line
     submitGuess = () => {
       // eslint-disable-line
-      const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
+      const activeTiles = Array.from(getActiveTiles() ?? []);
       if (activeTiles.length !== 5) {
         showAlert("Not enough letters!", 1000);
         shakeTiles(activeTiles);
@@ -170,7 +170,7 @@ export default function Home() {
   }
 
   function pressKey(key: any) {
-    const activeTiles = getActiveTiles(guessGridRef) ?? [];
+    const activeTiles = getActiveTiles() ?? [];
     if (activeTiles.length >= 5) {
       return;
     }
@@ -192,7 +192,7 @@ export default function Home() {
   }
 
   function deleteKey() {
-    const activeTiles = getActiveTiles(guessGridRef);
+    const activeTiles = getActiveTiles();
     if (!activeTiles) return;
     const lastTile = activeTiles[activeTiles.length - 1] as HTMLElement;
     if (!lastTile) return;
@@ -241,8 +241,8 @@ export default function Home() {
     );
   }
 
-  function getActiveTiles(guessGrid: RefObject<HTMLDivElement>) {
-    return guessGrid.current?.querySelectorAll('[data-state="active"]');
+  function getActiveTiles() {
+    return guessGridRef.current?.querySelectorAll('[data-state="active"]');
   }
 
   function showAlert(message: any, duration: number | null = 1000) {
