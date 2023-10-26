@@ -1,6 +1,6 @@
 import InformationBox from "@/components/InformationBox";
-import { useEffect, useRef, RefObject, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useRef, useState } from "react";
+import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
@@ -247,20 +247,24 @@ export default function Home() {
     return guessGridRef.current?.querySelectorAll('[data-state="active"]');
   }
 
-  function showAlert(message: any, duration: number | null = 1000) {
+  function showAlert(
+    message: any,
+    duration: number | null = 10000,
+    won = false,
+  ) {
     if (duration == null) {
       return;
     }
     toast(message, {
       position: "top-center",
       autoClose: duration,
-      hideProgressBar: true,
+      hideProgressBar: won ? true : false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "dark",
-      className: "border-2 border-[#39393c]"
+      className: "border-2 border-[#39393c]",
     });
   }
 
@@ -279,7 +283,7 @@ export default function Home() {
 
   function checkWinLose(guess: any, tiles: any) {
     if (guess === targetWord) {
-      showAlert("You Win!!! 🎉🎉", 6000);
+      showAlert("You Win!!! 🎉🎉", 6000, true);
       danceTiles(tiles);
       stopInteraction();
       return;
