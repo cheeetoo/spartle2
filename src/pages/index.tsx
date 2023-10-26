@@ -116,14 +116,16 @@ export default function Home() {
       <ToastContainer
         position="top-center"
         autoClose={5000}
-        hideProgressBar
+        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        transition={Flip}
         theme="dark"
+        progressClassName="!bg-[#fec10b]"
       />
     </>
   );
@@ -258,6 +260,7 @@ export default function Home() {
       draggable: true,
       progress: undefined,
       theme: "dark",
+      className: "border-2 border-[#39393c]"
     });
   }
 
