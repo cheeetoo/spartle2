@@ -92,18 +92,6 @@ body {
   transition: transform 250ms linear;
 }
 
-.smalltile {
-  font-size: 2em;
-  color: white;
-  text-transform: uppercase;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  transition: transform 250ms linear;
-}
-
 .tile[data-state="active"] {
   border-color: hsl(200, 1%, 34%);
 }

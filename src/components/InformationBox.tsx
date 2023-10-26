@@ -74,7 +74,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
         </div>
         <div className="font-bold text-xl">Examples</div>
         <div className="my-2 flex">
-          <div className="smalltile w-10 h-10 mr-1 bg-[#004a8f]">
+          <div className="text-[2em] text-[white] uppercase font-bold flex justify-center items-center select-none w-10 h-10 mr-1 bg-[#004a8f]">
             <p className="text-2xl">C</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
@@ -97,7 +97,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           <div className="tile w-10 h-10 mr-1">
             <p className="text-2xl">N</p>
           </div>
-          <div className="smalltile w-10 h-10 mr-1 bg-[#fec10b]">
+          <div className="text-[2em] text-[white] uppercase font-bold flex justify-center items-center select-none w-10 h-10 mr-1 bg-[#fec10b]">
             <p className="text-2xl">O</p>
           </div>
           <div className="tile w-10 h-10 mr-1">
@@ -123,7 +123,7 @@ export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
           <div className="tile w-10 h-10 mr-1">
             <p className="text-2xl">O</p>
           </div>
-          <div className="smalltile w-10 h-10 mr-1 bg-[#39393c]">
+          <div className="text-[2em] text-[white] uppercase font-bold flex justify-center items-center select-none w-10 h-10 mr-1 bg-[#39393c]">
             <p className="text-2xl">K</p>
           </div>
           <div className="tile w-10 h-10">
