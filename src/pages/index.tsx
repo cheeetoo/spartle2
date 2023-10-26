@@ -71,7 +71,6 @@ export default function Home() {
       </header>
       <main>
         <InformationBox modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
-        <div className="alert-container"></div>
         <div className="guess-grid" ref={guessGridRef}>
           {Array.from({ length: 30 }).map((_, index) => (
             <div className="tile" key={index}></div>
