@@ -76,7 +76,10 @@ export default function Home() {
             <div className="tile" key={index}></div>
           ))}
         </div>
-        <div className="keyboard" ref={keyboardRef}>
+        <div
+          className="grid grid-cols-[repeat(20,_minmax(auto,_1.25em))] auto-rows-[3em] gap-[0.25em] justify-center"
+          ref={keyboardRef}
+        >
           {"QWERTYUIOP".split("").map((letter) => (
             <button className="key" data-key={letter} key={letter}>
               {letter}
