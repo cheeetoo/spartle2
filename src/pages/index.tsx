@@ -49,7 +49,7 @@ export default function Home() {
   }, [dataFetched]);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen m-0 bg-[#121213] [font-size:_clamp(0.5rem,2.5vmin,1.5rem)]">
       <header className="text-white flex justify-between items-center border-b-2 w-full overflow-hidden p-4 mb-4 border-[#39393c]">
         <div></div>
         <div className="sm:text-4xl font-bold font-sans text-3xl">Spartle</div>
@@ -76,7 +76,10 @@ export default function Home() {
             <div className="tile" key={index}></div>
           ))}
         </div>
-        <div className="keyboard" ref={keyboardRef}>
+        <div
+          className="grid grid-cols-[repeat(20,_minmax(auto,_1.25em))] auto-rows-[3em] gap-[0.25em] justify-center"
+          ref={keyboardRef}
+        >
           {"QWERTYUIOP".split("").map((letter) => (
             <button className="key" data-key={letter} key={letter}>
               {letter}
@@ -112,7 +115,7 @@ export default function Home() {
           </button>
         </div>
       </main>
-    </>
+    </div>
   );
 
   function startInteraction() {
