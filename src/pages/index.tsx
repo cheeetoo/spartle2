@@ -16,6 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     stopInteraction = startInteraction(); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     submitGuess = () => {
       // eslint-disable-line
       const activeTiles = Array.from(getActiveTiles(guessGridRef) ?? []);
@@ -37,7 +38,7 @@ export default function Home() {
       activeTiles.forEach((...params) => flipTile(...params, guess));
     };
     const getData = async () => {
-      setDictionary((await (await fetch("/api/dict")).json()).dict);
+      setDictionary(JSON.parse(await (await fetch("/api/dict")).text()));
       setTargetWord((await (await fetch("/api/word")).json()).word);
       setDataFetched(true);
     };
