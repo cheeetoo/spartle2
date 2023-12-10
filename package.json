@@ -12,6 +12,7 @@
   "dependencies": {
     "@vercel/analytics": "^1.0.2",
     "@vercel/kv": "^0.2.3",
+    "@vercel/speed-insights": "^1.0.1",
     "googleapis": "^126.0.1",
     "next": "latest",
     "react": "latest",
