@@ -47,7 +47,7 @@ export default async function handler(
     const newDict: string[] = await JSON.parse(
       (await client.get("dict")) ?? "[]",
     );
-    newDict.push(word);
+    newDict.push(word.toLowerCase());
     client.set("dict", JSON.stringify(newDict));
   }
 
