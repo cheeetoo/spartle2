@@ -32,8 +32,8 @@ export default async function handler(
 
   // get values and set first cell of first column to word in kv
   const rows = response.data.values ?? [];
-  const word: string = rows[0] ? rows[0][0] : "rhino";
-  client.set("word", word.toLowerCase());
+  const word = rows[0] ? rows[0][0] : "rhino";
+  client.set("word", word);
 
   const dict: string[] = (await client.get("dict")) ?? [""];
   if (!dict.includes(word)) {
