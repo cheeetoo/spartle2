@@ -1,6 +1,8 @@
 import { google } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
 import { client } from "@/lib/kv_client";
+import { readFile } from "fs/promises";
+import path from "path";
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,10 +39,16 @@ export default async function handler(
     : (await (await fetch("/api/word")).json()).word;
   client.set("word", word.toLowerCase());
 
-  const dict: string[] = (await client.get("dict")) ?? [""];
-  if (!dict.includes(word)) {
-    dict.push(word);
-    client.set("dict", JSON.stringify(dict));
+  const dictKv: string[] = (await client.get("dict")) ?? [""];
+  const dictFile = (
+    await readFile(path.join(process.cwd(), "public", "words.txt"), "utf-8")
+  ).split("\n");
+  if (![...dictKv, ...dictFile].includes(word)) {
+    const newDict: string[] = await JSON.parse(
+      (await client.get("dict")) ?? "[]",
+    );
+    newDict.push(word.toLowerCase());
+    client.set("dict", JSON.stringify(newDict));
   }
 
   // sheets magick
