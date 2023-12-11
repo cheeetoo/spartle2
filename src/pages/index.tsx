@@ -69,7 +69,6 @@ export default function Home() {
           </svg>
         </button>
       </header>
-      {/* <main className="flex justify-center items-center flex-grow flex-col"> */}
       <main className="">
         <InformationBox modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
         <div className="alert-container" ref={alertContainerRef}></div>

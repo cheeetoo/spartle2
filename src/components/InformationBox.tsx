@@ -8,7 +8,10 @@ interface Props {
 
 export default function InformationBox({ modalIsOpen, setIsOpen }: Props) {
   useEffect(() => {
-    if (!document.cookie.split("; ").find((row) => row.startsWith("seen="))) {
+    if (
+      !document.cookie.split("; ").find((row) => row.startsWith("seen=")) &&
+      window.innerWidth > 768
+    ) {
       setIsOpen(true);
       document.cookie = `seen=true; max-age=${
         365 * 24 * 60 * 60
