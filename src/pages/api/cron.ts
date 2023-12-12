@@ -44,9 +44,7 @@ export default async function handler(
     await readFile(path.join(process.cwd(), "public", "words.txt"), "utf-8")
   ).split("\n");
   if (![...dictKv, ...dictFile].includes(word)) {
-    const newDict: string[] = await JSON.parse(
-      (await client.get("dict")) ?? "[]",
-    );
+    const newDict: string[] = (await client.get("dict")) ?? [""];
     newDict.push(word.toLowerCase());
     client.set("dict", JSON.stringify(newDict));
   }
